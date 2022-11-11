@@ -1,0 +1,95 @@
+!
+! ***   Feiertag prüfen
+!
+! (C)opyright 03.10.2022 Torsten Pattberg (torsten@pattberg.me)
+!
+
+boolean feiertag = false;
+
+string heute =  system.Date("%d%m");
+integer tagimjahr =  system.Date("%j");
+integer jahr = system.Date("%Y").ToInteger();
+
+WriteLine("heute="+ heute);
+WriteLine("tagimjahr="+ tagimjahr);
+WriteLine("jahr="+ jahr);
+
+integer schaltjahr = ((!jahr%400)||((jahr%100)&&(!jahr%4))).ToInteger();
+
+WriteLine("schaltjahr="+ schaltjahr);
+
+integer wert3 = (204-(jahr%19)*11)%30; 
+        wert3 = 120+wert3-(wert3/27); 
+
+integer wert1 = (wert3+((jahr*5)/4)-(jahr/2100))%7; 
+        wert3 = wert3-wert1;
+        wert1 = 1+(wert3%31); 
+
+integer wert2 = wert3/31; 
+
+integer ostersonntag = wert1+59+((wert2==4).ToInteger()*31)+schaltjahr;
+
+WriteLine("ostersonntag="+ ostersonntag);
+
+!
+! Liste der fixen Feiertage
+!
+if (heute == "0101"){
+    feiertag=true; ! Neujahr
+}
+if (heute == "0105"){
+    feiertag=true; ! 1. Mai
+}
+if (heute == "0310"){
+    feiertag=true; ! Tag der Deutschen Einheit
+}
+if (heute == "0111"){
+    feiertag=true; ! Allerheiligen
+}
+if (heute == "2412"){
+    feiertag=true; ! Heiligabend
+}
+if (heute == "2512"){
+    feiertag=true; ! Weihnachten
+}
+if (heute == "2612"){
+    feiertag=true; ! Weihnachten
+}
+if (heute == "3112"){
+    feiertag=true; ! Silvester
+}
+
+!
+! Liste der Oster-Feiertage
+!
+
+if (tagimjahr == (ostersonntag-48)){
+    feiertag=true; ! Rosenmontag
+}
+if (tagimjahr == (ostersonntag-2)){
+    feiertag=true; ! Karfreitag
+}
+if (tagimjahr == ostersonntag){
+    feiertag=true; ! Ostersonntag
+}
+if (tagimjahr == (ostersonntag+1)){
+    feiertag=true; ! Ostermontag
+}
+if (tagimjahr == (ostersonntag+39)){
+    feiertag=true; ! Christi Himmelfahrt
+}
+if (tagimjahr == (ostersonntag+50)){
+    feiertag=true; ! Pfingstmontag
+}
+if (tagimjahr == (ostersonntag+60)){
+    feiertag=true; ! Fronleichnam
+}
+
+if (feiertag){
+    WriteLine("Heute ist ein Feiertag.");
+}
+else{
+    WriteLine("Heute ist KEIN Feiertag.");
+}
+
+dom.GetObject("Misc.Feiertag").State(feiertag); ! Hier muss der Name deiner Systemvariablen rein
