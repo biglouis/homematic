@@ -1,0 +1,34 @@
+!
+! ***   Meteorologische Jahreszeit berechnen
+!
+! Ermittelt den Tag als Zahl, also z.B. 10.17 für den 17. Oktober.
+! Damit werden die Vergleiche einfacher zu schreiben.
+!
+! (C)opyright 16.7.2022 Torsten Pattberg (torsten@pattberg.me)
+!
+integer FRUEHLING = 0;
+integer SOMMER = 1;
+integer HERBST = 2;
+integer WINTER = 3;
+
+real tag =  (0.01 * system.Date("%d").ToInteger()) + system.Date("%m").ToInteger();
+integer jahreszeit;
+
+WriteLine("tag ="+ tag);
+
+if ((tag > 3.0) && (tag < 6.1)) { 
+    jahreszeit = FRUEHLING; 
+}
+elseif ((tag > 6.0) && (tag < 9.1)) { 
+    jahreszeit = SOMMER; 
+} 
+elseif ((tag > 9.0) && (tag < 12.1)) { 
+    jahreszeit = HERBST; 
+}
+else  { 
+    jahreszeit = WINTER; 
+}
+
+WriteLine("jahreszeit="+ jahreszeit);
+
+dom.GetObject("Misc.Jahreszeit").State(jahreszeit); ! Hier muss deine Systemvariable mit der entsprechenden Werteliste rein
