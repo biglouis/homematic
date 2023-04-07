@@ -7,7 +7,7 @@
 boolean feiertag = false;
 
 string heute =  system.Date("%d%m");
-integer tagimjahr =  system.Date("%j");
+integer tagimjahr =  system.Date("%j").ToInteger();
 integer jahr = system.Date("%Y").ToInteger();
 
 WriteLine("heute="+ heute);
